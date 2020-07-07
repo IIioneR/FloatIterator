@@ -4,33 +4,29 @@ class RangeFloatIterator:
     def __iter__(self):
         return self
 
-    def __init__(self, *args):
-        if len(args) == 1:
-            self.start = 0.0
-            self.end = args[0]
-            self.step = 1.0
-            self.counter = self.start
-        elif len(args) == 2:
-            self.start = args[0]
-            self.end = args[1]
-            self.step = 1.0
-            self.counter = self.start
+    def __init__(self, start, end=None, step=1.0):
+        self.step = step
+        self.start = start
+        self.end = end
+        if self.end is not None:
+            self.start, self.end = start, end
+        else:
+            self.start, self.end = 0.0, start
 
-        elif len(args) == 3:
-            self.start = args[0]
-            self.end = args[1]
-            self.step = args[2]
-            self.counter = self.start
+        self.counter = self.start
 
     def __next__(self):
-        if self.counter <= self.end:
+        if self.counter <= self.end-self.step:
             self.counter += self.step
-            return self.counter
+            return self.counter-self.step
         else:
             raise StopIteration
 
 
-frange = RangeFloatIterator(3, 50, 0.7)
+frange = RangeFloatIterator(5, 10, 1.5)
 
 for i in frange:
     print(i)
+
+assert(list(RangeFloatIterator(5)) == [0.0, 1.0, 2.0, 3.0, 4.0])
+
