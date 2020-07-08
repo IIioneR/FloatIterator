@@ -16,17 +16,19 @@ class RangeFloatIterator:
         self.counter = self.start
 
     def __next__(self):
-        if self.counter <= self.end-self.step:
+        if self.counter < self.end:
             self.counter += self.step
             return self.counter-self.step
         else:
             raise StopIteration
 
 
-frange = RangeFloatIterator(5, 10, 1.5)
-
-for i in frange:
-    print(i)
-
 assert(list(RangeFloatIterator(5)) == [0.0, 1.0, 2.0, 3.0, 4.0])
+assert(list(RangeFloatIterator(5)) == [0, 1, 2, 3, 4])
+assert(list(RangeFloatIterator(2, 5.5, 1.5)) == [2.0, 3.5, 5.0])
+assert(list(RangeFloatIterator(0, 2, 1)) == [0.0, 1.0])
+assert(list(RangeFloatIterator(1, 6)) == [1.0, 2.0, 3.0, 4.0, 5.0])
+assert(list(RangeFloatIterator(0, 0)) == [])
+assert(list(RangeFloatIterator(100, 0)) == [])
+
 
