@@ -1,6 +1,13 @@
 class RangeFloatIterator:
     counter = 0
 
+    def _step_check(self, condition):
+        if self.counter < self.end if condition else self.counter > self.end:
+            self.counter += self.step
+            return self.counter - self.step
+        else:
+            raise StopIteration
+
     def __iter__(self):
         return self
 
@@ -17,18 +24,9 @@ class RangeFloatIterator:
 
     def __next__(self):
         if self.step > 0:
-            if self.counter < self.end:
-                self.counter += self.step
-                return self.counter - self.step
-            else:
-                raise StopIteration
+            return self._step_check(True)
         else:
-
-            if self.counter > self.end:
-                self.counter += self.step
-                return self.counter - self.step
-            else:
-                raise StopIteration
+            return self._step_check(False)
 
 
 frange = RangeFloatIterator(10, 2, -2)
